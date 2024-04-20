@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player de Vídeo</title>
+<style>
+    #videoPlayer {
+        width: 1080px;
+        height: 720px;
+    }
+    .controls {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .controls button {
+        margin: 0 5px;
+    }
+</style>
+</head>
+<body>
+
+<input type="file" id="fileInput">
+<br><br>
+<video id="videoPlayer" controls>
+    Seu navegador não suporta o elemento de vídeo.
+</video>
+
+<div class="controls">
+    <button onclick="changePlaybackRate(1)">1x</button>
+    <button onclick="changePlaybackRate(1.5)">1.5x</button>
+    <button onclick="changePlaybackRate(1.75)">1.75x</button>
+    <button onclick="changePlaybackRate(2)">2x</button>
+</div>
+
+<script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const fileInput = document.getElementById('fileInput');
+
+    fileInput.addEventListener('change', function() {
+        const file = this.files[0];
+        const objectURL = URL.createObjectURL(file);
+        videoPlayer.src = objectURL;
+    });
+
+    function changePlaybackRate(rate) {
+        videoPlayer.playbackRate = rate;
+    }
+</script>
+
+</body>
+</html>
