@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabela de Números Aleatórios</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<table id="randomTable">
+    <thead>
+        <tr>
+            <th>N001</th>
+            <th>N002</th>
+            <th>N003</th>
+            <th>N004</th>
+            <th>N005</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    function generateRandomNumbers() {
+        let numbers = [];
+        for (let i = 1; i <= 1500; i++) {
+            numbers.push(i);
+        }
+        numbers.sort(() => Math.random() - 0.5);
+        return numbers;
+    }
+
+    function generateTable() {
+        let table = document.getElementById('randomTable');
+        let tbody = table.getElementsByTagName('tbody')[0];
+        let numbers = generateRandomNumbers();
+        let rowNum = 300;
+
+        for (let i = 0; i < rowNum; i++) {
+            let row = tbody.insertRow(i);
+            for (let j = 0; j < 5; j++) {
+                let cell = row.insertCell(j);
+                cell.textContent = numbers[i + j * rowNum];
+            }
+        }
+    }
+
+    generateTable();
+</script>
+
+</body>
+</html>
