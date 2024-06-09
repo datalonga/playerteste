@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extrator de URLs</title>
+</head>
+<body>
+
+
+<a href="https://www.domestika.org/pt/courses/l/em-portugues-pt">CURSOS DOMESTIKA</a>
+<br>
+<br>
+<a href="http://player.streamingtvguides.com/">PLAYER M3U8</a>
+
+<h2>Extrator de URLs entre "playbackURL" e "isTrailer", removendo prefixo e sufixo</h2>
+
+<textarea id="textoEntrada" rows="15" cols="150" placeholder="Insira o texto aqui"></textarea><br><br>
+
+<button onclick="extrairURLs()">Extrair URLs e remover prefixo e sufixo</button><br><br>
+
+<textarea id="textoSaida" rows="20" cols="150" readonly placeholder="URLs extraídas e processadas serão exibidas aqui"></textarea>
+
+<script>
+function extrairURLs() {
+    var textoEntrada = document.getElementById("textoEntrada").value;
+    var regex = /playbackURL.*?isTrailer/g;
+    var urlsEncontradas = [];
+    var match;
+
+    while ((match = regex.exec(textoEntrada)) !== null) {
+        var textoEntrePlayBackEIsTrailer = match[0].split("playbackURL")[1];
+        var url = textoEntrePlayBackEIsTrailer.split("isTrailer")[0];
+        urlsEncontradas.push(url.trim());
+    }
+
+    // Remover prefixo '\":\"' e sufixo '\",\"' de cada URL
+    for (var i = 0; i < urlsEncontradas.length; i++) {
+        urlsEncontradas[i] = urlsEncontradas[i].replace(/^\\":\\\"/, '').replace(/\\",\\\"$/, '');
+    }
+
+    var textoSaida = document.getElementById("textoSaida");
+
+    textoSaida.value = "";  // Limpar o campo de saída antes de adicionar novas URLs
+
+    if (urlsEncontradas.length > 0) {
+        for (var i = 0; i < urlsEncontradas.length; i++) {
+            textoSaida.value += urlsEncontradas[i] + "\n";
+        }
+    } else {
+        textoSaida.value = "Nenhuma URL encontrada entre 'playbackURL' e 'isTrailer'.";
+    }
+}
+</script>
+
+</body>
+</html>
