@@ -1,109 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Player de Vídeo</title>
-<style>
-  body {
-    display: flex; /* Center the video player and buttons horizontally */
-    justify-content: center;
-    align-items: flex-start; /* Align items to the top */
-    margin: 0;
-    background-color: black;
-  }
-
-  .container {
-    display: flex; /* Arrange video player and controls in a row */
-    flex-direction: column; /* Stack video player and controls vertically */
-    align-items: center; /* Center buttons horizontally */
-    width: 1080px; /* Match video player width */
-  }
-
-  #videoPlayer {
-    width: 1080px;
-    height: 720px;
-    margin: 0 auto;
-  }
-
-  .controls {
-    display: flex;
-    /* Changed justify-content to center buttons horizontally */
-    justify-content: center; 
-    width: 100%; /* Match container width */
-    margin-top: 20px;
-  }
-
-  .modernButton {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #333;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  .modernButton:hover {
-    background-color: #444;
-  }
-
-  .browse-button-container {
-    display: flex; /* Center the Browse button horizontally */
-    justify-content: center;
-    width: 100%; /* Match container width */
-    margin-top: 20px; /* Space above Browse button */
-  }
-
-  .browse-button {
-    margin-bottom: 20px; /* Space below Browse button */
-  }
-
-  .fixed-bottom {
-    position: fixed; /* Make the Browse button fixed to the bottom */
-    bottom: 0; /* Place it at the bottom of the page */
-    left: 0; /* Align it to the left */
-    width: 100%; /* Span the full width */
-    display: flex;
-    justify-content: center; /* Center the button horizontally */
-    padding: 20px; /* Add some padding around the button */
-    background-color: #333; /* Set a background color for the fixed area */
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Links</title>
+  <style>
+    body {
+      background-color: #1f1f1f;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #2f2f2f;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      text-align: center;
+    }
+    .links {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .links li {
+      margin-bottom: 10px;
+    }
+    .links a {
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #3f3f3f;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .links a:hover {
+      background-color: #4f4f4f;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <video id="videoPlayer" controls>
-    Seu navegador não suporta o elemento de vídeo.
-  </video>
-
-  <div class="controls">
-    <button class="modernButton" onclick="changePlaybackRate(1)">1x</button>
-    <button class="modernButton" onclick="changePlaybackRate(1.5)">1.5x</button>
-    <button class="modernButton" onclick="changePlaybackRate(1.75)">1.75x</button>
-    <button class="modernButton" onclick="changePlaybackRate(2)">2x</button>
+  <div class="container">
+    <h1>Links</h1>
+    <ul class="links">
+      <li><a href="video_player.html">Página de Reprodutor de Vídeo</a></li>
+      <li><a href="gera_numeros.html">Página de Geração de Números</a></li>
+      <li><a href="EXTRATOR_URL.html">Página de Extrator de URL</a></li>
+    </ul>
   </div>
-</div>
-
-<div class="fixed-bottom">
-  <input type="file" id="fileInput" class="browse-button"> <br><br>
-</div>
-
-<script>
-  const videoPlayer = document.getElementById('videoPlayer');
-  const fileInput = document.getElementById('fileInput');
-
-  fileInput.addEventListener('change', function() {
-    const file = this.files[0];
-    const objectURL = URL.createObjectURL(file);
-    videoPlayer.src = objectURL;
-  });
-
-  function changePlaybackRate(rate) {
-    videoPlayer.playbackRate = rate;
-  }
-</script>
 
 </body>
 </html>
