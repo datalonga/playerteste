@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player de Vídeo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #171717;
+      color: #FFFFFF;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    #videoPlayer {
+      width: 59vw;
+      height: 68vh;
+      background-color: #212121;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-list {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 300px;
+      overflow-y: auto;
+      /* Adicionando barra de rolagem vertical */
+      max-height: 650px;
+      /* Definindo uma altura máxima para a lista */
+      background-color: #222;
+    }
+
+    .video-list-item{
+      margin-bottom: 20px;
+    }
+
+    .video-list-item:hover {
+      color: #a1a1a1;
+
+    }
+
+    .video-list-item.selected {
+      background-color: #333;
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .btn {
+      background-color: #FFFFFF;
+      color: #000000;
+      padding: 10px 20px;
+      margin: 10px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul class="video-list" id="videoList"></ul>
+
+    <div id="videoPlayer">
+      <video controls>
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    
+  </div>
+
+  <div class="btn-container">
+    <input type="file" id="videoFileInput" style="display: none;" accept="video/mp4" multiple>
+    <input type="file" id="subtitleFileInput" style="display: none;" accept=".vtt" multiple>
+
+    <label for="videoFileInput" class="btn">Abrir Vídeos</label>
+    <label for="subtitleFileInput" class="btn">Abrir Legendas</label>
+  </div>
+
+  <script>
+    const videoPlayer = document.querySelector('video');
+    const videoFileInput = document.getElementById('videoFileInput');
+    const subtitleFileInput = document.getElementById('subtitleFileInput');
+    const videoList = document.getElementById('videoList');
+
+    videoFileInput.addEventListener('change', (event) => {
+      const files = event.target.files;
+      if (files.length > 0) {
+        Array.from(files).forEach(file => {
+          const videoURL = URL.createObjectURL(file);
+          const videoName = file.name.split('.').slice(0, -1).join('.');
+          const matchingSubtitles = Array.from(subtitleFileInput.files).find(subtitle => subtitle.name.split('.').slice(0, -1).join('.') === videoName);
+          addVideoToList(file.name, videoURL, matchingSubtitles);
+        });
+      }
+    });
+
+    subtitleFileInput.addEventListener('change', (event) => {
+      // Recarrega a lista de vídeos ao selecionar legendas
+      const videoItems = videoList.querySelectorAll('.video-list-item');
+      videoItems.forEach(item => item.remove());
+      const files = videoFileInput.files;
+      if (files.length > 0) {
+        Array.from(files).forEach(file => {
+          const videoURL = URL.createObjectURL(file);
+          const videoName = file.name.split('.').slice(0, -1).join('.');
+          const matchingSubtitles = Array.from(subtitleFileInput.files).find(subtitle => subtitle.name.split('.').slice(0, -1).join('.') === videoName);
+          addVideoToList(file.name, videoURL, matchingSubtitles);
+        });
+      }
+    });
+
+    function addVideoToList(name, url, subtitle) {
+      const listItem = document.createElement('li');
+      listItem.classList.add('video-list-item');
+      listItem.textContent = name;
+      listItem.setAttribute('data-src', url);
+      listItem.addEventListener('click', () => {
+        // Remove a classe 'selected' de todos os itens
+        const videoItems = document.querySelectorAll('.video-list-item');
+        videoItems.forEach(item => {
+          item.classList.remove('selected');
+        });
+        // Adiciona a classe 'selected' ao item clicado
+        listItem.classList.add('selected');
+
+        videoPlayer.src = url;
+        removeAllSubtitles();
+        if (subtitle) {
+          const track = document.createElement('track');
+          track.src = URL.createObjectURL(subtitle);
+          track.kind = 'subtitles';
+          track.srclang = 'pt';
+          track.label = 'Português';
+          track.default = true;
+          videoPlayer.appendChild(track);
+        }
+        videoPlayer.load();
+        videoPlayer.play();
+      });
+      videoList.appendChild(listItem);
+    }
+
+    function removeAllSubtitles() {
+      const subtitles = videoPlayer.querySelectorAll('track');
+      subtitles.forEach(subtitle => subtitle.remove());
+    }
+  </script>
+</body>
+
+</html>
