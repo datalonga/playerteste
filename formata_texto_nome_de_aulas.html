@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processamento de Texto</title>
+</head>
+<body>
+
+<h1>Processamento de Texto</h1>
+
+<textarea id="inputArea1" cols="100" rows="30"></textarea>
+<textarea id="outputArea" cols="100" rows="30"></textarea>
+
+<button onclick="processarTexto()">Processar Texto</button>
+
+<script>
+function processarTexto() {
+    var input1 = document.getElementById("inputArea1").value;
+    
+    // Remover linhas em branco
+    var lines = input1.split('\n');
+    var output = lines.filter(line => line.trim() !== '').join('\n');
+    
+    // Remover espaços antes do texto
+    output = output.replace(/^\s+/gm, '');
+    
+    // Substituir caracteres especiais por traço
+    output = output.replace(/(\\|\/|\||:|>|<)/g, '-');
+    
+    // Excluir caracteres especiais
+    output = output.replace(/(\?|!|@|#|\$|%|¨|&|\*)/g, '');
+    
+    // Enumerar todas as linhas com dois dígitos
+    var lineNumber = 0; // Começando com 0 para iniciar com 01
+    output = output.replace(/^(?=\s*[^]+?$)/gm, function() {
+        lineNumber++;
+        return ('0' + lineNumber).slice(-2) + '-';
+    });
+    
+    document.getElementById("outputArea").value = output;
+}
+</script>
+
+</body>
+</html>

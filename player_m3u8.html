@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Para centralizar verticalmente na página inteira */
+    }
+    .container {
+        text-align: center;
+    }
+    #videoPlayer {
+        width: 100%;
+        max-width: 640px;
+        margin-top: 20px;
+    }
+    input[type="text"], button {
+        padding: 10px;
+        width: 800px;
+        max-width: 800px;
+        margin-bottom: 10px;
+    }
+    .btn-container {
+        margin-top: 10px;
+    }
+    button {
+        padding: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        max-width: 200px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>PLAYER M3U8</h2>
+        <input type="text" id="m3u8Link" placeholder="Insira o link .m3u8 aqui">
+        <div class="btn-container">
+            <button onclick="carregarVideo()">Carregar Vídeo</button>
+            <button onclick="limparCampoTexto()" style="margin-left: 20px;">Limpar</button>
+        </div>
+
+        <div>
+            <video id="videoPlayer" controls>
+                Seu navegador não suporta o elemento <code>video</code>.
+            </video>
+        </div>
+    </div>
+
+    <!-- Incluir hls.js -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <script>
+        function carregarVideo() {
+            var m3u8LinkInput = document.getElementById('m3u8Link');
+            var m3u8Link = m3u8LinkInput.value.trim();
+
+            // Remover qualquer parâmetro após "master.m3u8"
+            var linkBase = m3u8Link.split('?')[0];
+
+            // Atualizar o valor do campo de texto (opcional, apenas para feedback visual)
+            m3u8LinkInput.value = linkBase;
+
+            // Verificar se o link é válido (pode ser melhorado para uma validação mais robusta)
+            if (linkBase.endsWith('.m3u8')) {
+                var video = document.getElementById('videoPlayer');
+                var hls = new Hls();
+
+                // Carregar o vídeo
+                if (Hls.isSupported()) {
+                    hls.loadSource(linkBase);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                        video.play();
+                    });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = linkBase;
+                    video.addEventListener('loadedmetadata', function () {
+                        video.play();
+                    });
+                } else {
+                    alert('Seu navegador não suporta reprodução de vídeos .m3u8.');
+                }
+            } else {
+                alert('Por favor, insira um link válido para um arquivo .m3u8.');
+            }
+        }
+
+        function limparCampoTexto() {
+            document.getElementById('m3u8Link').value = '';
+        }
+    </script>
+</body>
+</html>
