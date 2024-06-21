@@ -1,0 +1,35 @@
+CÓDIGOS
+
+
+JAVASCRIPT
+GERA UM TXT COM TODO O CONTEUDO DA PÁGINA
+PODE SER EXECUTADO VIA CONSOLE DO NAVEGADOR
+
+============================================
+// Função para capturar o conteúdo da página
+function capturePageContent() {
+    const htmlContent = document.documentElement.outerHTML; // Captura o HTML da página
+    return htmlContent;
+}
+
+// Função para gerar o arquivo TXT e iniciar o download
+function downloadTxtFile(content, filename) {
+    const element = document.createElement('a'); // Cria um elemento <a> para fazer o download
+    const blob = new Blob([content], { type: 'text/plain' }); // Cria um Blob com o conteúdo em formato TXT
+
+    element.href = URL.createObjectURL(blob); // Cria um URL para o Blob
+    element.download = filename; // Define o nome do arquivo para download
+    element.click(); // Simula um clique no elemento para iniciar o download
+    URL.revokeObjectURL(element.href); // Libera o recurso do objeto URL criado
+}
+
+// Captura o conteúdo da página
+const pageContent = capturePageContent();
+
+// Gera um nome para o arquivo (opcional: você pode personalizar o nome do arquivo)
+const filename = 'pagina_capturada.txt';
+
+// Chama a função para gerar o arquivo TXT e iniciar o download
+downloadTxtFile(pageContent, filename);
+
+============================================
